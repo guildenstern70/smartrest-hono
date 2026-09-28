@@ -4,7 +4,7 @@ SmartREST Hono is a modern, lightweight, and type-safe template for building RES
 
 <img src="resources/images/screenshot.png" width="700" alt="Screenshot">
 
-[Visit SmartREST Hono on Netlify](http://example.com)
+[Visit SmartREST Hono on Netlify](https://smartrest-hono.netlify.app/)
 
 ## Features
 

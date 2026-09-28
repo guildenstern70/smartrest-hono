@@ -5,7 +5,7 @@
  * See LICENSE
  */
 
-import pino from 'pino'
+import pino, { Logger } from 'pino'
 import packageJson from '../../package.json'
 
 export interface AppInfo {
@@ -18,21 +18,37 @@ export const getAppInfo = (): AppInfo => ({
   version: packageJson.version || '0.0.0',
 })
 
-const isProduction = process.env.NODE_ENV === 'production'
+const createLogger = (): Logger => {
+  const isServerless = Boolean(
+    process.env.NETLIFY ||
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      process.env.LAMBDA_TASK_ROOT ||
+      process.env.NODE_ENV === 'production'
+  )
 
-export const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
-  transport: !isProduction
-    ? {
+  // In Netlify / serverless / production environments, avoid thread-spawned transports like pino-pretty
+  if (isServerless) {
+    return pino({ level: process.env.LOG_LEVEL || 'info' })
+  }
+
+  try {
+    return pino({
+      level: process.env.LOG_LEVEL || 'info',
+      transport: {
         target: 'pino-pretty',
         options: {
           colorize: true,
           translateTime: 'HH:MM:ss Z',
           ignore: 'pid,hostname',
         },
-      }
-    : undefined,
-})
+      },
+    })
+  } catch {
+    return pino({ level: process.env.LOG_LEVEL || 'info' })
+  }
+}
+
+export const logger = createLogger()
 
 export const logAppStartup = (): AppInfo => {
   const info = getAppInfo()
