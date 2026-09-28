@@ -63,7 +63,24 @@ The application will start on `http://localhost:3000`.
 bun test
 ```
 
+### Production Build
+
+```bash
+bun run build
+```
+
 ---
+
+## Deployment (Netlify)
+
+This project is pre-configured for zero-friction deployment to **Netlify** using Netlify Functions.
+
+1. Connect your repository to Netlify.
+2. Netlify will automatically detect the [`netlify.toml`](file:///Users/alessio/Documents/Codice/TypeScript/smartrest-hono/netlify.toml) file with:
+   - **Build Command**: `bun run build`
+   - **Functions Directory**: `netlify/functions`
+   - **Publish Directory**: `public`
+3. In serverless environments, SQLite data is automatically configured to use `/tmp/smartrest.db`.
 
 ## API Endpoints
 

@@ -1,9 +1,14 @@
-# ide
+# os & ide
+.DS_Store
 .vscode/
 .idea/
 
 # deps
 node_modules/
+
+# build
+dist/
+.netlify/
 
 # sqlite
 *.db

@@ -43,6 +43,12 @@ export const initTables = (sqlite: Database): void => {
 }
 
 // Default singleton database instance
-const defaultDbSetup = createDatabase(process.env.DB_PATH || 'smartrest.db')
+const defaultDbPath =
+  process.env.DB_PATH ||
+  (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT
+    ? '/tmp/smartrest.db'
+    : 'smartrest.db')
+
+const defaultDbSetup = createDatabase(defaultDbPath)
 export const db = defaultDbSetup.db
 export const sqlite = defaultDbSetup.sqlite
