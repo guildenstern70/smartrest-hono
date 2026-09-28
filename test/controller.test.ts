@@ -13,14 +13,17 @@ import { PersonService, DatabaseService } from '../src/service'
 import { personController } from '../src/controller'
 
 describe('Person Controller HTTP Tests', () => {
-  const { db, sqlite } = createDatabase(':memory:')
-  initTables(sqlite)
+  const { db, client } = createDatabase(':memory:')
   const personDao = new PersonDao(db)
   const phoneDao = new PhoneDao(db)
   const personService = new PersonService(personDao, phoneDao)
-  const databaseService = new DatabaseService(sqlite, personDao, phoneDao, personService)
+  const databaseService = new DatabaseService(client, personDao, phoneDao, personService)
 
   const app = new Hono()
+  app.use('*', async (_c, next) => {
+    await initTables(client)
+    await next()
+  })
   app.route('/api/persons', personController(personService, databaseService))
 
   it('POST /api/persons/seed should seed 10 persons and 15 phones', async () => {

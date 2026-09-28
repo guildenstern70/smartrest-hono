@@ -18,9 +18,25 @@ import { logAppStartup, httpLogger } from './utils'
 logAppStartup()
 
 const databaseService = new DatabaseService()
-await databaseService.seedIfEmpty()
+let initPromise: Promise<unknown> | null = null
+
+export const ensureDbInitialized = async () => {
+  if (!initPromise) {
+    initPromise = databaseService.seedIfEmpty()
+  }
+  return initPromise
+}
+
+// Start async initialization in background
+ensureDbInitialized()
 
 const app = new Hono()
+
+// Middleware to ensure DB schema and initial seed are ready
+app.use('*', async (_c, next) => {
+  await ensureDbInitialized()
+  await next()
+})
 
 app.use('*', httpLogger())
 

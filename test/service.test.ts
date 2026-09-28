@@ -14,9 +14,9 @@ import { PersonService } from '../src/service/person.service'
 describe('PersonService Tests', () => {
   let personService: PersonService
 
-  beforeEach(() => {
-    const { db, sqlite } = createDatabase(':memory:')
-    initTables(sqlite)
+  beforeEach(async () => {
+    const { db, client } = createDatabase(':memory:')
+    await initTables(client)
     const personDao = new PersonDao(db)
     const phoneDao = new PhoneDao(db)
     personService = new PersonService(personDao, phoneDao)

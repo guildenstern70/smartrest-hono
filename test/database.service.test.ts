@@ -14,11 +14,11 @@ import { PersonService } from '../src/service/person.service'
 
 describe('DatabaseService Seeder Tests', () => {
   it('should initialize and seed exactly 10 persons and 15 phone numbers', async () => {
-    const { db, sqlite } = createDatabase(':memory:')
+    const { db, client } = createDatabase(':memory:')
     const personDao = new PersonDao(db)
     const phoneDao = new PhoneDao(db)
     const personService = new PersonService(personDao, phoneDao)
-    const dbService = new DatabaseService(sqlite, personDao, phoneDao, personService)
+    const dbService = new DatabaseService(client, personDao, phoneDao, personService)
 
     const result = await dbService.seedDatabase()
 
@@ -39,11 +39,11 @@ describe('DatabaseService Seeder Tests', () => {
   })
 
   it('should only seed if the database is empty', async () => {
-    const { db, sqlite } = createDatabase(':memory:')
+    const { db, client } = createDatabase(':memory:')
     const personDao = new PersonDao(db)
     const phoneDao = new PhoneDao(db)
     const personService = new PersonService(personDao, phoneDao)
-    const dbService = new DatabaseService(sqlite, personDao, phoneDao, personService)
+    const dbService = new DatabaseService(client, personDao, phoneDao, personService)
 
     const firstRun = await dbService.seedIfEmpty()
     expect(firstRun.seeded).toBe(true)

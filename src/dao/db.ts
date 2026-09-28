@@ -5,21 +5,38 @@
  * See LICENSE
  */
 
-import { Database } from 'bun:sqlite'
-import { drizzle, BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite'
+import { createClient, Client } from '@libsql/client'
+import { drizzle, LibSQLDatabase } from 'drizzle-orm/libsql'
 import * as schema from '../model'
 
-export type AppDatabase = BunSQLiteDatabase<typeof schema>
+export type AppDatabase = LibSQLDatabase<typeof schema>
 
-export const createDatabase = (dbPath: string = 'smartrest.db'): { db: AppDatabase; sqlite: Database } => {
-  const sqlite = new Database(dbPath)
-  sqlite.run('PRAGMA foreign_keys = ON;')
-  const db = drizzle(sqlite, { schema })
-  return { db, sqlite }
+export const getDbUrl = (dbPath?: string): string => {
+  if (dbPath) {
+    return dbPath.startsWith('file:') || dbPath === ':memory:' ? dbPath : `file:${dbPath}`
+  }
+  if (process.env.DB_URL) {
+    return process.env.DB_URL
+  }
+  const isServerless = Boolean(
+    process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT
+  )
+  const path = process.env.DB_PATH || (isServerless ? '/tmp/smartrest.db' : 'smartrest.db')
+  return path.startsWith('file:') || path === ':memory:' ? path : `file:${path}`
 }
 
-export const initTables = (sqlite: Database): void => {
-  sqlite.run(`
+export const createDatabase = (
+  dbPath?: string
+): { db: AppDatabase; client: Client } => {
+  const url = getDbUrl(dbPath)
+  const client = createClient({ url })
+  const db = drizzle(client, { schema })
+  return { db, client }
+}
+
+export const initTables = async (client: Client): Promise<void> => {
+  await client.execute('PRAGMA foreign_keys = ON;')
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS persons (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -30,7 +47,7 @@ export const initTables = (sqlite: Database): void => {
     );
   `)
 
-  sqlite.run(`
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS phones (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       person_id INTEGER NOT NULL,
@@ -43,12 +60,6 @@ export const initTables = (sqlite: Database): void => {
 }
 
 // Default singleton database instance
-const defaultDbPath =
-  process.env.DB_PATH ||
-  (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT
-    ? '/tmp/smartrest.db'
-    : 'smartrest.db')
-
-const defaultDbSetup = createDatabase(defaultDbPath)
+const defaultDbSetup = createDatabase()
 export const db = defaultDbSetup.db
-export const sqlite = defaultDbSetup.sqlite
+export const client = defaultDbSetup.client

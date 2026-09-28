@@ -20,8 +20,8 @@ describe('Phone Controller and Service Tests', () => {
   let person2Id: number
 
   beforeEach(async () => {
-    const { db, sqlite } = createDatabase(':memory:')
-    initTables(sqlite)
+    const { db, client } = createDatabase(':memory:')
+    await initTables(client)
     const personDao = new PersonDao(db)
     const phoneDao = new PhoneDao(db)
     personService = new PersonService(personDao, phoneDao)

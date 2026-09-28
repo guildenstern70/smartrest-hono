@@ -15,9 +15,9 @@ describe('DAO Tests', () => {
   let personDao: PersonDao
   let phoneDao: PhoneDao
 
-  beforeEach(() => {
-    const { db, sqlite } = createDatabase(':memory:')
-    initTables(sqlite)
+  beforeEach(async () => {
+    const { db, client } = createDatabase(':memory:')
+    await initTables(client)
     testDb = db
     personDao = new PersonDao(testDb)
     phoneDao = new PhoneDao(testDb)

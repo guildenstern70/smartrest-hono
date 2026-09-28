@@ -4,6 +4,8 @@ SmartREST Hono is a modern, lightweight, and type-safe template for building RES
 
 <img src="resources/images/screenshot.png" width="700" alt="Screenshot">
 
+[Visit SmartREST Hono on Netlify](http://example.com)
+
 ## Features
 
 * ⚡ **Bun Runtime & Package Manager**: Ultra-fast execution and native test runner.

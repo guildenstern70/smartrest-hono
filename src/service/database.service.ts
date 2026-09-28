@@ -5,8 +5,8 @@
  * See LICENSE
  */
 
-import { Database } from 'bun:sqlite'
-import { initTables, sqlite as defaultSqlite } from '../dao/db'
+import { Client } from '@libsql/client'
+import { initTables, client as defaultClient } from '../dao/db'
 import { PersonDao, PhoneDao } from '../dao'
 import { PersonService } from './person.service'
 import { CreatePersonWithPhonesDto } from '../dto'
@@ -111,18 +111,18 @@ export const SEED_PERSONS: CreatePersonWithPhonesDto[] = [
 
 export class DatabaseService {
   constructor(
-    private sqliteInstance: Database = defaultSqlite,
+    private clientInstance: Client = defaultClient,
     private personDao: PersonDao = new PersonDao(),
     private phoneDao: PhoneDao = new PhoneDao(),
     private personService: PersonService = new PersonService(personDao, phoneDao)
   ) {}
 
-  initSchema(): void {
-    initTables(this.sqliteInstance)
+  async initSchema(): Promise<void> {
+    await initTables(this.clientInstance)
   }
 
   async seedDatabase(): Promise<{ personsCreated: number; phonesCreated: number }> {
-    this.initSchema()
+    await this.initSchema()
 
     // Clear existing data before seeding
     await this.phoneDao.deleteAll()
@@ -139,7 +139,7 @@ export class DatabaseService {
   }
 
   async seedIfEmpty(): Promise<{ seeded: boolean; personsCreated: number; phonesCreated: number }> {
-    this.initSchema()
+    await this.initSchema()
     const count = await this.personDao.count()
     if (count === 0) {
       const result = await this.seedDatabase()
