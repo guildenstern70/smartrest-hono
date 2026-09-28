@@ -6,11 +6,27 @@
  */
 
 import { Hono } from 'hono'
+import {
+  homeController,
+  personController,
+  phoneController,
+  swaggerController,
+} from './controller'
+import { DatabaseService } from './service'
+import { logAppStartup, httpLogger } from './utils'
+
+logAppStartup()
+
+const databaseService = new DatabaseService()
+await databaseService.seedIfEmpty()
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use('*', httpLogger())
+
+app.route('/', homeController())
+app.route('/api/persons', personController(undefined, databaseService))
+app.route('/api/phones', phoneController())
+app.route('/', swaggerController())
 
 export default app
