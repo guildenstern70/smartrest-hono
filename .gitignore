@@ -1,0 +1,7 @@
+# ide
+.vscode/
+.idea/
+
+# deps
+node_modules/
+
