@@ -5,6 +5,12 @@
 
 [functions]
   node_bundler = "esbuild"
+  external_node_modules = [
+    "@libsql/client",
+    "libsql",
+    "@libsql/linux-x64-gnu",
+    "@libsql/linux-x64-musl"
+  ]
   included_files = ["package.json"]
 
 [[redirects]]
