@@ -26,6 +26,7 @@ describe('Home Page Controller Tests', () => {
     expect(html).toContain('hero')
     expect(html).toContain('href="/swagger"')
     expect(html).toContain('href="/doc/download"')
+    expect(html).toContain('https://github.com/guildenstern70/smartrest-hono')
     expect(html).toContain('Drizzle')
     expect(html).toContain('SQLite')
   })

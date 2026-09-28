@@ -139,7 +139,7 @@ export const homeController = () => {
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     .nav-link {
@@ -152,6 +152,28 @@ export const homeController = () => {
 
     .nav-link:hover {
       color: var(--text-primary);
+    }
+
+    .nav-github-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-github-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      transform: translateY(-1px);
     }
 
     /* Hero Section */
@@ -212,6 +234,7 @@ export const homeController = () => {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      align-items: center;
       gap: 1.25rem;
       margin-bottom: 4rem;
     }
@@ -255,10 +278,26 @@ export const homeController = () => {
       transform: translateY(-2px);
     }
 
+    .btn-github {
+      background: #24292e;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn-github:hover {
+      background: #2f363d;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
     .btn-icon {
       display: inline-block;
       width: 18px;
       height: 18px;
+      flex-shrink: 0;
     }
 
     /* Feature Grid */
@@ -312,10 +351,30 @@ export const homeController = () => {
     footer {
       margin-top: auto;
       border-top: 1px solid var(--border-color);
-      padding: 2rem 0;
+      padding: 2.5rem 0;
       text-align: center;
       color: var(--text-muted);
       font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--accent-primary);
     }
 
     @media (max-width: 640px) {
@@ -352,6 +411,12 @@ export const homeController = () => {
       <nav class="nav-links">
         <a href="/swagger" class="nav-link">Swagger UI</a>
         <a href="/doc" class="nav-link">OpenAPI Spec</a>
+        <a href="https://github.com/guildenstern70/smartrest-hono" target="_blank" rel="noopener noreferrer" class="nav-github-btn" id="header-github-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
       </nav>
     </header>
 
@@ -376,7 +441,7 @@ export const homeController = () => {
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
             </svg>
-            <span>Interactive Documentation (Swagger UI)</span>
+            <span>Swagger UI Documentation</span>
           </a>
 
           <a href="/doc/download" class="btn btn-secondary" id="btn-download-openapi" download="openapi.json">
@@ -386,6 +451,13 @@ export const homeController = () => {
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
             <span>Download OpenAPI JSON</span>
+          </a>
+
+          <a href="https://github.com/guildenstern70/smartrest-hono" target="_blank" rel="noopener noreferrer" class="btn btn-github" id="btn-github">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            </svg>
+            <span>View on GitHub</span>
           </a>
         </div>
       </section>
@@ -401,7 +473,7 @@ export const homeController = () => {
             </svg>
           </div>
           <h3 class="feature-title">Embedded SQLite</h3>
-          <p class="feature-desc">Zero-setup relational storage with native bun:sqlite speed and full foreign key support.</p>
+          <p class="feature-desc">Zero-setup relational storage with native Bun and serverless speed and full foreign key support.</p>
         </div>
 
         <div class="feature-card">
@@ -440,6 +512,11 @@ export const homeController = () => {
     </main>
 
     <footer>
+      <div class="footer-links">
+        <a href="/swagger" class="footer-link">Swagger UI</a>
+        <a href="/doc" class="footer-link">OpenAPI Spec</a>
+        <a href="https://github.com/guildenstern70/smartrest-hono" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repository</a>
+      </div>
       <p>SmartREST - Hono Edition &copy; 2026 Alessio Saltarin. Licensed under ISC License.</p>
     </footer>
   </div>
